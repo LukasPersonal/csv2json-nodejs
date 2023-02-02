@@ -52,12 +52,12 @@ const main = async () => {
   // error handling
   file.on('error', function (err) { console.log(err) })
   jsonArray.forEach(function (v) {
-	// check if its the last item in the array
-	if (jsonArray.indexOf(v) === jsonArray.length - 1) {
-		file.write(`${JSON.stringify(v)}\n`)
-	} else {
-  		file.write(`${JSON.stringify(v)},\n`) 
-	}
+    // check if its the last item in the array
+    if (jsonArray.indexOf(v) === jsonArray.length - 1) {
+      file.write(`${JSON.stringify(v)}\n`)
+    } else {
+      file.write(`${JSON.stringify(v)},\n`)
+    }
   })
 
   // close the file
