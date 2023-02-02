@@ -7,10 +7,6 @@
 // Requirments
 const csv = require('csvtojson')
 const fs = require('fs')
-const converter = csv({
-  trim: true,
-  ignoreEmpty: true
-})
 const main = async () => {
 /**
  * Variables
@@ -18,7 +14,7 @@ const main = async () => {
   // Get the path to the CSV file from parameters
   const csvFilePath = process.argv[2]
   // Get the path to the JSON file from parameters
-  const jsonFilePath = process.argv[3]
+  let jsonFilePath = process.argv[3]
 
   /**
  * Validate the parameters
@@ -36,7 +32,7 @@ const main = async () => {
   /**
  * Convert the CSV file to JSON file
  */
-  csv()
+  csv({ trim: true, ignoreEmpty: true })
     .fromFile(csvFilePath)
     .then((jsonObj) => {
       console.log(jsonObj)
@@ -56,12 +52,15 @@ const main = async () => {
   // error handling
   file.on('error', function (err) { console.log(err) })
   jsonArray.forEach(function (v) {
-    // dont write the line if the value is empty
-    if (v) { file.write(`${JSON.stringify(v)},\n`) }
+	// check if its the last item in the array
+	if (jsonArray.indexOf(v) === jsonArray.length - 1) {
+		file.write(`${JSON.stringify(v)}\n`)
+	} else {
+  		file.write(`${JSON.stringify(v)},\n`) 
+	}
   })
 
-  // remove the last comma
-  file.write('\b\b')
+  // close the file
   file.write(']')
   file.end()
 }
